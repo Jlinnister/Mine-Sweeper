@@ -1,4 +1,5 @@
 require 'byebug'
+require 'colorize'
 require_relative 'tile.rb'
 
 class Board
@@ -7,17 +8,29 @@ class Board
   def initialize
     @grid = Array.new(9) {Array.new(9) {Tile.new}}
     populate_with_bombs(9)
+    set_bomb_counts
   end
+
+  def set_bomb_counts
+    (0..8).each do |row|
+      (0..8).each do |col|
+        adjacents = adjacent_tiles([row, col])
+        count = count_adjacent_bombs(adjacents)
+        set_bomb_count([row,col], count)
+      end
+    end
+  end
+
 
   def populate_with_bombs(num_bombs)
     num_bombs.times do
       row = rand(9)
       col = rand(9)
-      until @grid[row][col] != "b"
+      until @grid[row][col].bomb? != true
         row = rand(9)
         col = rand(9)
       end
-      @grid[row][col].value = "b"
+      @grid[row][col].bomb = true
     end
   end
 
@@ -32,7 +45,7 @@ class Board
 
   def count_adjacent_bombs(positions)
     positions.count do |pos|
-      self[pos].value == "b"
+      self[pos].bomb?
     end
   end
 
@@ -43,12 +56,15 @@ class Board
   def render
     rows = grid.map  do |row|
       row = row.map do |square|
-        square.value
+        if square.revealed?
+          square.value
+        else
+          "-"
+        end
       end
       row.join("")
     end
     puts rows.join("\n")
-
   end
 
   def [](pos)

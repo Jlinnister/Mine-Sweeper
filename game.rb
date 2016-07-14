@@ -1,13 +1,13 @@
 require_relative 'board.rb'
 require 'byebug'
 class MineSweeper
-  attr_reader :board
+  attr_reader :board, :over
   def initialize
     @board = Board.new
   end
 
   def run
-    while true
+    until over?
       play_turn
     end
 
@@ -16,11 +16,14 @@ class MineSweeper
     position = get_input
     reveal_square(position)
 
-    adjacents = board.adjacent_tiles(position)
+    # adjacents = board.adjacent_tiles(position)
+    #
+    # bomb_count = board.count_adjacent_bombs(adjacents)
+    #
+    # board.set_bomb_count(position,bomb_count)
 
-    bomb_count = board.count_adjacent_bombs(adjacents)
 
-    board.set_bomb_count(position,bomb_count)
+
 
     board.render
   end
@@ -36,9 +39,23 @@ class MineSweeper
 
   def reveal_square(position)
     @board[position].reveal
+    if @board[position].bomb?
+      @over = true
+      puts "Kaboom!"
+    end
+    if board[position].value == 0
+      adjacents = board.adjacent_tiles(position)
+      unless adjacents.any?{|el| board[el].bomb?}
+        adjacents.each do |tile|
+          reveal_square(tile) unless @board[tile].revealed?
+        end
+      end
+    end
   end
 
-
+  def over?
+    @over
+  end
 
 
 end

@@ -1,7 +1,8 @@
 class Tile
   def initialize(revealed = false)
     @revealed = revealed
-    @value = '_'
+    @value = 0
+    @bomb = false
   end
 
   def value=(val)
@@ -20,6 +21,11 @@ class Tile
     @value
   end
 
+  def bomb?
+    @bomb
+  end
+
   attr_reader :value, :revealed
+  attr_accessor :bomb
 
 end
