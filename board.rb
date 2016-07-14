@@ -49,6 +49,10 @@ class Board
     end
   end
 
+  def flag_square(position)
+    self[position].flag = true
+  end
+
   def set_bomb_count(position, value)
     self[position].value = value
   end
@@ -58,6 +62,8 @@ class Board
       row = row.map do |square|
         if square.revealed?
           square.value
+        elsif square.flag?
+          "F"
         else
           "-"
         end

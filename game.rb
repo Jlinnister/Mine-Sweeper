@@ -13,24 +13,22 @@ class MineSweeper
 
   end
   def play_turn
-    position = get_input
-    reveal_square(position)
-
-    # adjacents = board.adjacent_tiles(position)
-    #
-    # bomb_count = board.count_adjacent_bombs(adjacents)
-    #
-    # board.set_bomb_count(position,bomb_count)
-
-
-
+    position, type = get_input
+    if type == 'r'
+      reveal_square(position)
+    elsif type == 'f'
+      board.flag_square(position)
+    end
 
     board.render
   end
 
   def get_input
-    puts "Enter position to guess: "
-    parse_position(gets.chomp)
+    puts "Enter move (ex: 'r 0,1') "
+    input = gets.chomp
+
+    move_type = input[0]
+    [parse_position(input[2..-1]), move_type]
   end
 
   def parse_position(position)
