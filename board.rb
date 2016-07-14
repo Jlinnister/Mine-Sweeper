@@ -83,6 +83,8 @@ class Board
     @grid[x][y] = value
   end
 
-
+  def win?
+    grid.flatten.none? { |el| !el.revealed? && !el.bomb? }
+  end
 
 end

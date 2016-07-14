@@ -10,7 +10,7 @@ class MineSweeper
     until over?
       play_turn
     end
-
+    puts "You Win!" if board.win?
   end
   def play_turn
     position, type = get_input
@@ -21,6 +21,7 @@ class MineSweeper
     end
 
     board.render
+    @over = true if board.win?
   end
 
   def get_input
