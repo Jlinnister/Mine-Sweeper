@@ -6,9 +6,21 @@ class MineSweeper
     @board = Board.new
   end
 
+  def run
+    while true
+      play_turn
+    end
+
+  end
   def play_turn
     position = get_input
     reveal_square(position)
+
+    adjacents = board.adjacent_tiles(position)
+
+    bomb_count = board.count_adjacent_bombs(adjacents)
+
+    board.set_bomb_count(position,bomb_count)
 
     board.render
   end
@@ -26,12 +38,12 @@ class MineSweeper
     @board[position].reveal
   end
 
-  
+
 
 
 end
 
 if __FILE__ == $PROGRAM_NAME
   game = MineSweeper.new
-  game.play_turn
+  game.run
 end

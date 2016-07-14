@@ -16,6 +16,9 @@ class Tile
     @revealed = true
   end
 
+  def to_s
+    @value
+  end
 
   attr_reader :value, :revealed
 

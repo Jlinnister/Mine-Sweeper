@@ -1,3 +1,4 @@
+require 'byebug'
 require_relative 'tile.rb'
 
 class Board
@@ -21,7 +22,22 @@ class Board
   end
 
   def adjacent_tiles(position)
+    deltas = [[-1,1],[-1,-1],[1,-1],[1,1],[-1, 0], [1,0], [0,1], [0,-1]]
+    tiles = []
+    deltas.each do |delta|
+      tiles << [(position[0] + delta[0]), (position[1] + delta[1])]
+    end
+    tiles.reject{|el| el.any?{|v| v < 0 || v >= grid.length}}
+  end
 
+  def count_adjacent_bombs(positions)
+    positions.count do |pos|
+      self[pos].value == "b"
+    end
+  end
+
+  def set_bomb_count(position, value)
+    self[position].value = value
   end
 
   def render
