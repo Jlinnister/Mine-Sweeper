@@ -8,7 +8,15 @@ class Tile
     @value = val
   end
 
-  private
-  attr_reader :value
+  def revealed?
+    revealed
+  end
+
+  def reveal
+    @revealed = true
+  end
+
+
+  attr_reader :value, :revealed
 
 end

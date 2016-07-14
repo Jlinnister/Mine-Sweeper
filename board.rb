@@ -1,6 +1,7 @@
 require_relative 'tile.rb'
 
 class Board
+  attr_reader :grid
 
   def initialize
     @grid = Array.new(9) {Array.new(9) {Tile.new}}
@@ -19,6 +20,21 @@ class Board
     end
   end
 
+  def adjacent_tiles(position)
+
+  end
+
+  def render
+    rows = grid.map  do |row|
+      row = row.map do |square|
+        square.value
+      end
+      row.join("")
+    end
+    puts rows.join("\n")
+
+  end
+
   def [](pos)
     x, y = pos
     @grid[x][y]
@@ -28,6 +44,7 @@ class Board
     x,y = pos
     @grid[x][y] = value
   end
+
 
 
 end
