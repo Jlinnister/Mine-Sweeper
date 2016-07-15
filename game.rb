@@ -1,5 +1,7 @@
 require_relative 'board.rb'
 require 'byebug'
+require 'yaml'
+
 class MineSweeper
   attr_reader :board, :over
   def initialize
@@ -18,6 +20,8 @@ class MineSweeper
       reveal_square(position)
     elsif type == 'f'
       board.flag_square(position)
+    elsif type == 's'
+      File.open('test.yml', 'w') {|f| f.write self.to_yaml } #Store
     end
 
     board.render
@@ -25,7 +29,7 @@ class MineSweeper
   end
 
   def get_input
-    puts "Enter move (ex: 'r 0,1') "
+    puts "Enter move (ex: 'r 0,1') or (s to save)"
     input = gets.chomp
 
     move_type = input[0]
@@ -33,7 +37,7 @@ class MineSweeper
   end
 
   def parse_position(position)
-    position.split(",").map(&:to_i)
+    position.split(",").map(&:to_i) unless position == nil
   end
 
   def reveal_square(position)
@@ -60,6 +64,14 @@ class MineSweeper
 end
 
 if __FILE__ == $PROGRAM_NAME
-  game = MineSweeper.new
-  game.run
+  puts "load game or new game (L/N)?"
+  answer = gets.chomp
+  if answer == "N"
+    game = MineSweeper.new
+    game.run
+  elsif answer == "L"
+    game = YAML::load_file('test.yml')
+    game.board.render
+    game.run
+  end
 end
