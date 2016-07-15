@@ -58,6 +58,7 @@ class Board
   end
 
   def render
+    system('clear')
     rows = grid.map  do |row|
       row = row.map do |square|
         if square.revealed?
@@ -70,7 +71,30 @@ class Board
       end
       row.join("")
     end
-    puts rows.join("\n")
+    output = rows.join("\n")
+    print ' '
+    output.chars do |c|
+      if c == "-" || c == "\n"
+        print c
+        print ' '
+      elsif c == '0'
+        print c.colorize(:green)
+        print ' '
+      elsif c == '1'
+        print c.colorize(:blue)
+        print ' '
+      elsif c == '2'
+        print c.colorize(:yellow)
+        print ' '
+      elsif c == '3'
+        print c.colorize(:light_red)
+        print ' '
+      else
+        print c.colorize(:red)
+        print ' '
+      end
+    end
+    puts
   end
 
   def [](pos)
@@ -86,5 +110,7 @@ class Board
   def win?
     grid.flatten.none? { |el| !el.revealed? && !el.bomb? }
   end
+
+
 
 end

@@ -6,10 +6,6 @@ class Tile
     @flag = false
   end
 
-  def value=(val)
-    @value = val
-  end
-
   def revealed?
     revealed
   end
@@ -30,7 +26,7 @@ class Tile
     @flag
   end
 
-  attr_reader :value, :revealed
-  attr_accessor :bomb, :flag
+  attr_reader :revealed
+  attr_accessor :bomb, :flag, :value
 
 end
